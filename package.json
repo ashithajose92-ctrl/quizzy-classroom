@@ -1,0 +1,12 @@
+{
+  "name": "quizzy-classroom",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A real-time classroom quiz with PIN and nickname joining, supporting up to 80 students per room.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

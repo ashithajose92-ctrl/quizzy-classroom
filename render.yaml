@@ -1,0 +1,9 @@
+services:
+  - type: web
+    runtime: node
+    name: quizzy-classroom
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
