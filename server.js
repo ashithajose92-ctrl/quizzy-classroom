@@ -94,7 +94,7 @@ const server = http.createServer(async (req, res) => {
         const nickname = String(body.nickname || '').trim().slice(0, 20); if (!nickname) return send(res, 400, { error: 'Enter a nickname.' });
         const id = crypto.randomBytes(12).toString('hex'); room.players.set(id, { id, nickname, score: 0 }); broadcast(room); return send(res, 201, { playerId: id });
       }
-      if (!authHost(room, req, body)) return send(res, 403, { error: 'Only the quiz host can do that.' });
+      if (action !== 'answer' && !authHost(room, req, body)) return send(res, 403, { error: 'Only the quiz host can do that.' });
       if (action === 'start') { if (room.status !== 'lobby') return send(res, 409, { error: 'Quiz is already running.' }); room.status = 'playing'; room.questionIndex = 0; startQuestion(room); return send(res, 200, { ok: true }); }
       if (action === 'reveal') { reveal(room); return send(res, 200, { ok: true }); }
       if (action === 'next') { if (room.status !== 'playing' || !room.revealed) return send(res, 409, { error: 'Reveal the answer before continuing.' }); room.questionIndex++; if (room.questionIndex >= room.questions.length) { room.status = 'finished'; broadcast(room); } else startQuestion(room); return send(res, 200, { ok: true }); }
